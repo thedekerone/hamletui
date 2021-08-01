@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "./styles";
 import { BsPlayFill, BsHeart } from "react-icons/bs";
+import { connect } from "react-redux";
 
 export const Sound = () => {
   return (
@@ -16,3 +17,19 @@ export const Sound = () => {
     </Container>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    todos: getVisibleTodos(state.todos, state.visibilityFilter),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTodoClick: (id) => {
+      dispatch(toggleTodo(id));
+    },
+  };
+};
+
+const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(Sound);
