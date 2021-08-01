@@ -8,7 +8,6 @@ import { defaultState } from "../src/actions";
 let store = createStore(todoApp, defaultState);
 
 function MyApp({ Component, pageProps }) {
-  console.log(store.getState());
   return (
     <Provider store={store}>
       <GlobalStyle></GlobalStyle>

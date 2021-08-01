@@ -6,7 +6,3 @@ export const Title = styled.h3`
   margin-bottom: 1rem;
   font-weight: 600;
 `;
-
-export const SoundContainer = styled.div`
-  margin-top: 1.5rem;
-`;

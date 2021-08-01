@@ -1,24 +1,14 @@
 import React from "react";
 import { Layout } from "../Layout";
-import { Sound } from "../Sound";
-import { SoundContainer, Title } from "./styles";
+import { LikedSounds } from "../LikedSounds";
+
+import { Title } from "./styles";
 
 export const Home = () => {
   return (
     <Layout>
       <Title>Mis audios</Title>
-      <SoundContainer>
-        <Sound></Sound>
-      </SoundContainer>
-      <SoundContainer>
-        <Sound></Sound>
-      </SoundContainer>
-      <SoundContainer>
-        <Sound></Sound>
-      </SoundContainer>
-      <SoundContainer>
-        <Sound></Sound>
-      </SoundContainer>
+      <LikedSounds></LikedSounds>
     </Layout>
   );
 };

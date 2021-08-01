@@ -1,35 +1,45 @@
 import React from "react";
 import { Container } from "./styles";
-import { BsPlayFill, BsHeart } from "react-icons/bs";
-import { connect } from "react-redux";
+import { BsPlayFill, BsHeart, BsHeartFill, BsPauseFill } from "react-icons/bs";
 
-export const Sound = () => {
+export const Sound = ({ options, onClickLike, onTogglePlay }) => {
+  const { title, createdBy, isPlaying, hasLike, id } = options;
+  console.log(onClickLike);
   return (
     <Container>
-      <BsPlayFill color='#5C20D1' size='35'></BsPlayFill>
+      {isPlaying ? (
+        <BsPauseFill
+          onClick={() => onTogglePlay(id)}
+          color='#5C20D1'
+          size='35'
+        ></BsPauseFill>
+      ) : (
+        <BsPlayFill
+          onClick={() => onTogglePlay(id)}
+          color='#5C20D1'
+          size='35'
+        ></BsPlayFill>
+      )}
+
       <div className='content'>
         <div className='content-title'>
-          <h4>Ejemplo de titulo numero 1</h4>
-          <p>By usuario_1</p>
+          <h4>{title}</h4>
+          <p>{createdBy}</p>
         </div>
       </div>
-      <BsHeart color='#5C20D1' size='25'></BsHeart>
+      {hasLike ? (
+        <BsHeartFill
+          onClick={() => onClickLike(id)}
+          color='#5C20D1'
+          size='25'
+        ></BsHeartFill>
+      ) : (
+        <BsHeart
+          onClick={() => onClickLike(id)}
+          color='#5C20D1'
+          size='25'
+        ></BsHeart>
+      )}
     </Container>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    todos: getVisibleTodos(state.todos, state.visibilityFilter),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTodoClick: (id) => {
-      dispatch(toggleTodo(id));
-    },
-  };
-};
-
-const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(Sound);

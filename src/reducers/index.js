@@ -1,24 +1,50 @@
 import { combineReducers } from "redux";
-import {
-  ADD_TODO,
-  COMPLETE_TODO,
-  defaultState,
-  SET_VISIBILITY_FILTER,
-  VisibilityFilters,
-} from "../actions";
-
-console.log(VisibilityFilters);
-
-const { SHOW_ALL } = VisibilityFilters;
+import { LIKE_SOUND, TOGGLE_PLAY } from "../actions";
 
 function user(state = {}, action) {
   return state;
 }
 
-function sounds(state = [], action) {
-  return state;
+function togglePlayPipe(soundList, id) {
+  return soundList.map((sound) =>
+    sound.id === id
+      ? { ...sound, isPlaying: !sound.isPlaying }
+      : { ...sound, isPlaying: false }
+  );
 }
 
-const todoApp = combineReducers({ user, sounds });
+function sounds(state = { allSounds: [], likedSounds: [] }, action) {
+  console.log(state);
+  switch (action.type) {
+    case LIKE_SOUND:
+      return {
+        allSounds: state.allSounds.map((sound) =>
+          sound.id === action.id
+            ? {
+                ...sound,
+                hasLike: !sound.hasLike,
+              }
+            : sound
+        ),
+        likedSounds: state.likedSounds.filter(
+          (sound) => sound.id !== action.id
+        ),
+      };
+
+    case TOGGLE_PLAY:
+      return {
+        allSounds: togglePlayPipe(state.allSounds, action.id),
+        likedSounds: togglePlayPipe(state.likedSounds, action.id),
+      };
+
+    default:
+      return state;
+  }
+}
+
+const todoApp = combineReducers({
+  user,
+  sounds,
+});
 
 export default todoApp;
