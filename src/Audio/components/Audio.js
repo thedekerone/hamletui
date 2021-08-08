@@ -1,14 +1,14 @@
 class AudioPlayer {
-  private audio: HTMLMediaElement;
+  audio;
 
   constructor() {
     this.audio = new Audio();
   }
 
-  play(src: string | MediaStream) {
-    if (typeof src === 'string') {
+  play(src) {
+    if (typeof src === "string") {
       this.audio.src = src;
-    } else if (typeof src === 'object') {
+    } else if (typeof src === "object") {
       this.audio.srcObject = src;
     }
     this.audio.play();
@@ -24,15 +24,15 @@ class AudioPlayer {
     this.audio.pause();
   }
 
-  changeAudioDevice(deviceId: string) {
+  changeAudioDevice(deviceId) {
     // setSinkId is a experimental
-    (this.audio as any)
+    this.audio
       .setSinkId(deviceId)
       .then(() => {
         console.log(`Success, audio output device attached: ${deviceId}`);
         return null;
       })
-      .catch((err: Error) => console.log(err));
+      .catch((err) => console.log(err));
     return deviceId;
   }
 }

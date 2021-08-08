@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { loadData } from "../../actions";
 import { Layout } from "../Layout";
 import { connect } from "react-redux";
@@ -8,13 +8,27 @@ import { useQuery } from "@apollo/client";
 import { Title } from "./styles";
 import { allSounds, favoriteSounds } from "../../querys/querys";
 import { formatSounds } from "../../util";
+import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
 export const HomeLayout = ({ onLoad }) => {
   const { loading, error, data } = useQuery(favoriteSounds());
+  const { audio } = useContext(AudioManagerContext);
+
   const favorite = useQuery(allSounds(10, 0));
 
   useEffect(() => {
-    if (data && favorite) {
+    audio.addEventListener("ended", () => {
+      onTogglePlay("");
+      console.log(".//////////////////////////////////////////////");
+    });
+    return audio.removeEventListener("ended", () => {
+      onTogglePlay("");
+      console.log(".//////////////////////////////////////////////");
+    });
+  }, []);
+
+  useEffect(() => {
+    if (data && favorite.data) {
       onLoad(
         formatSounds(favorite.data.allSounds, true),
         formatSounds(data.allSounds, true)

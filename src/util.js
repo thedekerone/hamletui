@@ -1,71 +1,5 @@
-const soundsExample = [
-  {
-    title: "Test",
-    file: {
-      publicUrl:
-        "https://hamul-clone.s3.us-east-1.amazonaws.com/sounds/60bfc948c7eec22cf8bf5c4d-file_example_MP3_1MG.mp3",
-    },
-    author: {
-      name: "Admin",
-    },
-    liking: [
-      {
-        id: "60af0be3351c033080892cfb",
-      },
-    ],
-    id: "60bfc94ac7eec22cf8bf5c4e",
-  },
-  {
-    title: "Esta cargando mi daga - madara",
-    file: {
-      publicUrl:
-        "https://hamul-clone.s3.us-east-1.amazonaws.com/sounds/60c3f597dfdec3001cf50e89-ta cargando mi daga.mp3",
-    },
-    author: {
-      name: "admin123",
-    },
-    liking: [],
-    id: "60c3f598dfdec3001cf50e8a",
-  },
-  {
-    title: "No vales ni un sol",
-    file: {
-      publicUrl:
-        "https://hamul-clone.s3.us-east-1.amazonaws.com/sounds/60c3f6d4dfdec3001cf50e8b-no vales ni un sol.mp3",
-    },
-    author: {
-      name: "admin123",
-    },
-    liking: [],
-    id: "60c3f6d4dfdec3001cf50e8c",
-  },
-];
-
-const userExample = {
-  id: "60af0be3351c033080892cfb",
-  name: "Admin",
-  favoriteSounds: [
-    {
-      title: "Test",
-      file: {
-        publicUrl:
-          "https://hamul-clone.s3.us-east-1.amazonaws.com/sounds/60bfc948c7eec22cf8bf5c4d-file_example_MP3_1MG.mp3",
-      },
-      author: {
-        name: "Admin",
-      },
-      liking: [
-        {
-          id: "60af0be3351c033080892cfb",
-        },
-      ],
-      id: "60bfc94ac7eec22cf8bf5c4e",
-    },
-  ],
-};
-
 export const formatSounds = (
-  soundList = soundsExample,
+  soundList = [],
   isFavorite = false,
   userId = "0000"
 ) => {
@@ -89,3 +23,26 @@ export const formatUser = (user) => {
 };
 
 export const selectFavorites = (sounds, favoriteSounds) => {};
+
+export const getDevices = async () => {
+  let deviceList = [];
+  let inputDevices = [];
+  let outputDevices = [];
+  if (navigator !== undefined) {
+    try {
+      deviceList = await navigator.mediaDevices.enumerateDevices();
+      inputDevices = deviceList.filter((el) => el.kind === "audioinput");
+      outputDevices = deviceList.filter((el) => el.kind === "audiooutput");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return { inputDevices, outputDevices };
+};
+
+export const selectMic = (deviceId) => {
+  if (navigator !== undefined) {
+    return navigator.mediaDevices.getUserMedia({ audio: { deviceId } });
+  }
+  return null;
+};

@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import { SoundList } from "../SoundList";
 import { toggleLike, togglePlay } from "../../actions";
 
-console.log(toggleLike(1));
-
 const mapDispatchToProps = (dispatch) => {
   return {
     onClickLike: (id) => {
@@ -18,11 +16,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export const LikedSounds = connect(
-  (state) => ({ sounds: state.sounds.favoriteSounds }),
+  (state) => ({
+    sounds: state.sounds.favoriteSounds,
+    config: state.audioConfig,
+  }),
   mapDispatchToProps
 )(SoundList);
 
 export const AllSounds = connect(
-  (state) => ({ sounds: state.sounds.allSounds }),
+  (state) => ({ sounds: state.sounds.allSounds, config: state.audioConfig }),
   mapDispatchToProps
 )(SoundList);

@@ -14,6 +14,7 @@ import {
 } from "@apollo/client";
 import { allSounds } from "../src/querys/querys";
 import { formatSounds } from "../src/util";
+import AudioManager from "../src/Audio/components/AudioManager";
 
 const client = new ApolloClient({
   uri: "https://hamul-server.herokuapp.com/admin/api",
@@ -24,12 +25,14 @@ function MyApp({ Component, pageProps }) {
   let state = defaultState;
 
   let store = createStore(todoApp, defaultState);
-
+  console.log(state);
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <GlobalStyle></GlobalStyle>
-        <Component {...pageProps} />;
+        <AudioManager>
+          <GlobalStyle></GlobalStyle>
+          <Component {...pageProps} />;
+        </AudioManager>
       </Provider>
     </ApolloProvider>
   );

@@ -72,6 +72,11 @@ export const defaultState = {
       },
     ],
   },
+  audioConfig: {
+    isPlaying: false,
+    current: "",
+    volume: 1,
+  },
 };
 
 /*

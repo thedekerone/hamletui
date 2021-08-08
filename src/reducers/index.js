@@ -22,7 +22,6 @@ function user(state = {}, action) {
 // allSounds and favoriteSounds reducers work together to reduce the number of lines in the code
 
 function sounds(state = { allSounds: [], favoriteSounds: [] }, action) {
-  console.log(state);
   switch (action.type) {
     case TOGGLE_LIKE:
       return {
@@ -45,11 +44,6 @@ function sounds(state = { allSounds: [], favoriteSounds: [] }, action) {
             ],
       };
 
-    case TOGGLE_PLAY:
-      return {
-        allSounds: togglePlayPipe(state.allSounds, action.id),
-        favoriteSounds: togglePlayPipe(state.favoriteSounds, action.id),
-      };
     case LOAD_DATA:
       return {
         allSounds:
@@ -67,9 +61,20 @@ function sounds(state = { allSounds: [], favoriteSounds: [] }, action) {
   }
 }
 
+function audioConfig(state = {}, action) {
+  switch (action.type) {
+    case TOGGLE_PLAY:
+      return { ...state, isPlaying: !state.isPlaying, current: action.id };
+
+    default:
+      return state;
+  }
+}
+
 const todoApp = combineReducers({
   user,
   sounds,
+  audioConfig,
 });
 
 export default todoApp;

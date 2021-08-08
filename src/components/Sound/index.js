@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Container } from "./styles";
 import { BsPlayFill, BsHeart, BsHeartFill, BsPauseFill } from "react-icons/bs";
+import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
-export const Sound = ({ options, onClickLike, onTogglePlay }) => {
-  const { title, createdBy, isPlaying, hasLike, id } = options;
-  console.log(onClickLike);
+export const Sound = ({ options, config, onClickLike, onTogglePlay }) => {
+  const { title, createdBy, hasLike, id, src } = options;
+
+  const { play, changeMic, stop, audio } = useContext(AudioManagerContext);
+
+  const isPlaying = config.isPlaying && id === config.current;
+
+  const handlePlay = () => {
+    onTogglePlay(id);
+    if (isPlaying) {
+      stop();
+    } else {
+      play(src);
+    }
+  };
+
   return (
     <Container>
       {isPlaying ? (
         <BsPauseFill
-          onClick={() => onTogglePlay(id)}
+          onClick={() => handlePlay()}
           color='#5C20D1'
           size='35'
         ></BsPauseFill>
       ) : (
         <BsPlayFill
-          onClick={() => onTogglePlay(id)}
+          onClick={() => handlePlay(id)}
           color='#5C20D1'
           size='35'
         ></BsPlayFill>

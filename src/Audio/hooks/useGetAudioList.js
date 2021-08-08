@@ -1,5 +1,5 @@
-import { ApolloError, gql, useQuery } from '@apollo/client';
-import { Sound } from '../components/types';
+import { ApolloError, gql, useQuery } from "@apollo/client";
+import { Sound } from "../components/types";
 
 const EXCHANGE_RATES = gql`
   query getSounds {
@@ -13,17 +13,13 @@ const EXCHANGE_RATES = gql`
   }
 `;
 
-export const useGetAudioList: () => {
-  loading: boolean;
-  error: ApolloError | undefined;
-  data: Sound[];
-} = () => {
+export const useGetAudioList = () => {
   const response = useQuery(EXCHANGE_RATES);
   const { loading, error } = response;
   const { data } = response;
   if (loading || error) return { loading, error, data };
 
-  const formatedData: Sound[] = data.allSounds.map((el: any) => ({
+  const formatedData = data.allSounds.map((el) => ({
     title: el.title,
     url: el.file.publicUrl,
     id: el.id,
