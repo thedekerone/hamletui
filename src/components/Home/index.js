@@ -20,7 +20,7 @@ export const HomeLayout = ({ onLoad }) => {
         formatSounds(data.allSounds, true)
       );
     }
-  }, [data, favorite]);
+  }, [data, favorite, onLoad]);
 
   return (
     <Layout>
