@@ -3,6 +3,7 @@ import { Sound } from "../Sound";
 import { SoundContainer } from "./styles";
 
 export const SoundList = ({ sounds, onClickLike, onTogglePlay }) => {
+  console.log(sounds);
   return (
     <Fragment>
       {sounds.map((sound) => (

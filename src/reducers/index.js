@@ -1,9 +1,7 @@
 import { combineReducers } from "redux";
-import { LIKE_SOUND, TOGGLE_PLAY } from "../actions";
+import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA } from "../actions";
 
-function user(state = {}, action) {
-  return state;
-}
+// extra functions - no reducers (change directory later)
 
 function togglePlayPipe(soundList, id) {
   return soundList.map((sound) =>
@@ -13,10 +11,20 @@ function togglePlayPipe(soundList, id) {
   );
 }
 
-function sounds(state = { allSounds: [], likedSounds: [] }, action) {
+// end extra functions - no reducers (change directory later)
+
+const findById = (soundList, id) => soundList.find((sound) => sound.id === id);
+
+function user(state = {}, action) {
+  return state;
+}
+
+// allSounds and favoriteSounds reducers work together to reduce the number of lines in the code
+
+function sounds(state = { allSounds: [], favoriteSounds: [] }, action) {
   console.log(state);
   switch (action.type) {
-    case LIKE_SOUND:
+    case TOGGLE_LIKE:
       return {
         allSounds: state.allSounds.map((sound) =>
           sound.id === action.id
@@ -26,15 +34,32 @@ function sounds(state = { allSounds: [], likedSounds: [] }, action) {
               }
             : sound
         ),
-        likedSounds: state.likedSounds.filter(
-          (sound) => sound.id !== action.id
-        ),
+        favoriteSounds: findById(state.favoriteSounds, action.id)
+          ? state.favoriteSounds.filter((sound) => sound.id !== action.id)
+          : [
+              ...state.favoriteSounds,
+              {
+                ...findById(state.allSounds, action.id),
+                hasLike: true,
+              },
+            ],
       };
 
     case TOGGLE_PLAY:
       return {
         allSounds: togglePlayPipe(state.allSounds, action.id),
-        likedSounds: togglePlayPipe(state.likedSounds, action.id),
+        favoriteSounds: togglePlayPipe(state.favoriteSounds, action.id),
+      };
+    case LOAD_DATA:
+      return {
+        allSounds:
+          action.data.allSounds.length > 0
+            ? action.data.allSounds
+            : state.allSounds,
+        favoriteSounds:
+          action.data.favoriteSounds.length > 0
+            ? action.data.favoriteSounds
+            : state.favoriteSounds,
       };
 
     default:

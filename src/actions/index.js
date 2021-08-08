@@ -2,9 +2,10 @@
  * tipos de acciones
  */
 
-export const LIKE_SOUND = "LIKE_SOUND";
+export const TOGGLE_LIKE = "TOGGLE_LIKE";
 export const TOGGLE_PLAY = "TOGGLE_PLAY";
 export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
+export const LOAD_DATA = "LOAD_DATA";
 
 /*
  * otras constantes
@@ -44,7 +45,7 @@ export const defaultState = {
         hasLike: false,
       },
     ],
-    likedSounds: [
+    favoriteSounds: [
       {
         title: "Esta cargando mi daga",
         src: "https://hamul-clone.s3.amazonaws.com/sounds/60c3f597dfdec3001cf50e89-ta+cargando+mi+daga.mp3",
@@ -61,6 +62,14 @@ export const defaultState = {
         isPlaying: false,
         hasLike: true,
       },
+      {
+        title: "Esta cargando mi daga 13",
+        src: "https://hamul-clone.s3.amazonaws.com/sounds/60c3f597dfdec3001cf50e89-ta+cargando+mi+daga.mp3",
+        createdBy: "usuario_1",
+        id: "y4531231243213r",
+        isPlaying: false,
+        hasLike: true,
+      },
     ],
   },
 };
@@ -69,12 +78,18 @@ export const defaultState = {
  * creadores de acciones
  */
 
-export function likeSound(id) {
-  return { type: LIKE_SOUND, id };
+export function toggleLike(id) {
+  return { type: TOGGLE_LIKE, id };
 }
 
 export function togglePlay(id) {
   return { type: TOGGLE_PLAY, id };
+}
+export function loadData(allSounds = [], favoriteSounds = []) {
+  return {
+    type: LOAD_DATA,
+    data: { favoriteSounds: favoriteSounds, allSounds: allSounds },
+  };
 }
 
 export function setVisibilityFilter(filter) {

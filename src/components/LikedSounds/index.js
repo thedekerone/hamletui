@@ -2,20 +2,14 @@ import React from "react";
 import { Sound } from "../Sound";
 import { connect } from "react-redux";
 import { SoundList } from "../SoundList";
-import { likeSound, togglePlay } from "../../actions";
+import { toggleLike, togglePlay } from "../../actions";
 
-const mapStateToProps = (state) => {
-  return {
-    sounds: state.sounds.likedSounds,
-  };
-};
-
-console.log(likeSound(1));
+console.log(toggleLike(1));
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onClickLike: (id) => {
-      dispatch(likeSound(id));
+      dispatch(toggleLike(id));
     },
     onTogglePlay: (id) => {
       dispatch(togglePlay(id));
@@ -24,6 +18,11 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export const LikedSounds = connect(
-  mapStateToProps,
+  (state) => ({ sounds: state.sounds.favoriteSounds }),
+  mapDispatchToProps
+)(SoundList);
+
+export const AllSounds = connect(
+  (state) => ({ sounds: state.sounds.allSounds }),
   mapDispatchToProps
 )(SoundList);
