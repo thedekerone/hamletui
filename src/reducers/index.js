@@ -64,7 +64,11 @@ function sounds(state = { allSounds: [], favoriteSounds: [] }, action) {
 function audioConfig(state = {}, action) {
   switch (action.type) {
     case TOGGLE_PLAY:
-      return { ...state, isPlaying: !state.isPlaying, current: action.id };
+      return {
+        ...state,
+        isPlaying: action.id === state.id ? !state.isPlaying : true,
+        current: action.id,
+      };
 
     default:
       return state;

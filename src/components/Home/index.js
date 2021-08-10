@@ -1,40 +1,31 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { loadData } from "../../actions";
 import { Layout } from "../Layout";
 import { connect } from "react-redux";
 import { AllSounds, LikedSounds } from "../LikedSounds";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { Title } from "./styles";
-import { allSounds, favoriteSounds } from "../../querys/querys";
+import {
+  allSounds,
+  authenticateUserWithPassword,
+  favoriteSounds,
+  getAuthenticatedUser,
+} from "../../querys/querys";
 import { formatSounds } from "../../util";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
-export const HomeLayout = ({ onLoad }) => {
-  const { loading, error, data } = useQuery(favoriteSounds());
+export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   const { audio } = useContext(AudioManagerContext);
-
-  const favorite = useQuery(allSounds(10, 0));
 
   useEffect(() => {
     audio.addEventListener("ended", () => {
       onTogglePlay("");
-      console.log(".//////////////////////////////////////////////");
     });
     return audio.removeEventListener("ended", () => {
       onTogglePlay("");
-      console.log(".//////////////////////////////////////////////");
     });
   }, []);
-
-  useEffect(() => {
-    if (data && favorite.data) {
-      onLoad(
-        formatSounds(favorite.data.allSounds, true),
-        formatSounds(data.allSounds, true)
-      );
-    }
-  }, [data, favorite, onLoad]);
 
   return (
     <Layout>
@@ -51,10 +42,13 @@ const mapDispatchToProps = (dispatch) => {
     onLoad: (allSounds, favoriteSounds) => {
       dispatch(loadData(allSounds, favoriteSounds));
     },
+    onTogglePlay: (id) => {
+      dispatch(togglePlay(id));
+    },
   };
 };
 
 export const Home = connect(
-  (state) => ({ sounds: state.sounds.favoriteSounds }),
+  (state) => ({ userId: state.user.id }),
   mapDispatchToProps
 )(HomeLayout);
