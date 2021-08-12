@@ -81,10 +81,6 @@ export const authenticateUserWithPassword = gql`
       token
       item {
         id
-        name
-        favoriteSounds {
-          title
-        }
       }
     }
   }

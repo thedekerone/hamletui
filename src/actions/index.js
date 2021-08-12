@@ -13,8 +13,9 @@ export const LOAD_DATA = "LOAD_DATA";
 
 export const defaultState = {
   user: {
-    id: 1,
-    username: "Thedekerone",
+    id: 0,
+    username: "Guest",
+    token:'',
     avatar:
       "https://www.pngitem.com/pimgs/m/80-800194_transparent-users-icon-png-flat-user-icon-png.png",
   },

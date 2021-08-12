@@ -4,14 +4,23 @@ import { connect } from "react-redux";
 import { authenticateUserWithPassword } from "../../../querys/querys";
 import { LoginContainer, LoginModal, Overlay } from "./styles";
 
-export const LoginUI = ({ show = false }) => {
+export const LoginUI = ({ show = true }) => {
   const email = useRef();
   const password = useRef();
-  //   const { loading, error, data } = useMutation(
-  //     authenticateUserWithPassword(email.current.value, password.config.value)
-  //   );
+  const [signin] = useMutation(authenticateUserWithPassword);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    const res = await signin({
+      variables: {
+        email: email.current.value,
+        password: password.current.value,
+      },
+    });
+    localStorage.setItem(
+      "userId",
+      res.data.authenticateUserWithPassword.item.id
+    );
+    console.log(res.data.authenticateUserWithPassword);
     console.log(email.current.value);
   };
 

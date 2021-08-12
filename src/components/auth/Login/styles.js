@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const LoginContainer = styled.div`
   max-width: 400px;
   width: 100%;
-  margin: 20rem auto 6rem;
+  margin: 0 auto 6rem;
   background-color: white;
   border-radius: 10px;
   padding: 1rem 1rem;
@@ -41,12 +41,13 @@ export const LoginContainer = styled.div`
 `;
 
 export const LoginModal = styled.div`
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: ${(props) => (props.show ? "flex" : "none")};
   position: fixed;
   width: 100%;
   z-index: 1000;
-  height: 100%;
+  height: 100vh;
   top: 0;
+  align-items: center;
   left: 0;
 `;
 export const Overlay = styled.div`
