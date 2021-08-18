@@ -1,10 +1,11 @@
 import { useMutation, useQuery } from "@apollo/client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { authenticateUserWithPassword } from "../../../querys/querys";
 import { LoginContainer, LoginModal, Overlay } from "./styles";
 
-export const LoginUI = ({ show = true }) => {
+export const LoginUI = ({ show = false }) => {
+  const [isShowing, setIsShowing] = useState(show);
   const email = useRef();
   const password = useRef();
   const [signin] = useMutation(authenticateUserWithPassword);
@@ -20,12 +21,11 @@ export const LoginUI = ({ show = true }) => {
       "userId",
       res.data.authenticateUserWithPassword.item.id
     );
-    console.log(res.data.authenticateUserWithPassword);
-    console.log(email.current.value);
+    setIsShowing(false);
   };
 
   return (
-    <LoginModal show={show}>
+    <LoginModal show={isShowing}>
       <LoginContainer>
         <h2>Login</h2>
         <div>

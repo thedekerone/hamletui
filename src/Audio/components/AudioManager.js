@@ -26,7 +26,6 @@ const AudioManager = ({ children }) => {
     navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
       getDevices()
         .then((res) => {
-          console.log(res);
           const virtualOutput = res.outputDevices.find((el) =>
             el.label.includes("CABLE")
           );

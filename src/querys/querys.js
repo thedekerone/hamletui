@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_SOUNDS = gql`
-  query GET_ALL_SOUNDS($first: string!, $skip: string!) {
+  query GET_ALL_SOUNDS($first: Int!, $skip: Int!) {
     allSounds(first: $first, skip: $skip) {
       title
       file {
@@ -65,6 +65,23 @@ export const GET_ALL_SOUNDS = gql`
 // }
 // `;
 
+export const LIKE_SOUND = gql`
+  mutation LIKE_SOUND($audioId: ID!, $userId: ID!) {
+    updateSound(id: $audioId, data: { liking: { connect: { id: $userId } } }) {
+      id
+    }
+  }
+`;
+export const DISLIKE_SOUND = gql`
+  mutation DISLIKE_SOUND($audioId: ID!, $userId: ID!) {
+    updateSound(
+      id: $audioId
+      data: { liking: { disconnect: { id: $userId } } }
+    ) {
+      id
+    }
+  }
+`;
 export const getAuthenticatedUser = gql`
   query CURRENT_USER_QUERY {
     authenticatedUser {
@@ -81,6 +98,28 @@ export const authenticateUserWithPassword = gql`
       token
       item {
         id
+      }
+    }
+  }
+`;
+
+export const GET_CURRENT_USER = gql`
+  query GET_CURRENT_USER($id: ID!) {
+    User(where: { id: $id }) {
+      id
+      name
+      favoriteSounds {
+        title
+        id
+        author {
+          name
+        }
+        file {
+          publicUrl
+        }
+        liking {
+          id
+        }
       }
     }
   }

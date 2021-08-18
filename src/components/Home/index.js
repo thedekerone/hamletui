@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import { loadData } from "../../actions";
+import { loadData, togglePlay } from "../../actions";
 import { Layout } from "../Layout";
 import { connect } from "react-redux";
 import { AllSounds, LikedSounds } from "../LikedSounds";
@@ -11,12 +11,45 @@ import {
   authenticateUserWithPassword,
   favoriteSounds,
   getAuthenticatedUser,
+  GET_ALL_SOUNDS,
+  GET_CURRENT_USER,
 } from "../../querys/querys";
-import { formatSounds } from "../../util";
+import { formatSounds, formatUser } from "../../util";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
 export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   const { audio } = useContext(AudioManagerContext);
+
+  const { loading, error, data } = useQuery(GET_CURRENT_USER, {
+    variables: {
+      id: localStorage.getItem("userId"),
+    },
+  });
+  const allSounds = useQuery(GET_ALL_SOUNDS, {
+    variables: {
+      first: 40,
+      skip: 0,
+    },
+  });
+
+  function setFavoriteSounds() {
+    if (data) {
+      onLoad([], formatSounds(data.User.favoriteSounds, true));
+    }
+  }
+
+  function setAllSounds() {
+    if (allSounds.data) {
+      onLoad(
+        formatSounds(
+          allSounds.data.allSounds,
+          false,
+          localStorage.getItem("userId")
+        ),
+        []
+      );
+    }
+  }
 
   useEffect(() => {
     audio.addEventListener("ended", () => {
@@ -26,6 +59,11 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
       onTogglePlay("");
     });
   }, []);
+
+  useEffect(() => {
+    setFavoriteSounds();
+    setAllSounds();
+  }, [data, allSounds]);
 
   return (
     <Layout>

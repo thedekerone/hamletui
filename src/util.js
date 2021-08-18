@@ -3,13 +3,17 @@ export const formatSounds = (
   isFavorite = false,
   userId = "0000"
 ) => {
+  console.log(userId);
+  console.log(soundList);
   return soundList.map((sound) => ({
     title: sound.title,
     src: sound.file.publicUrl,
     isPlaying: false,
     createdBy: sound.author.name,
     id: sound.id,
-    hasLike: isFavorite ? true : sound.liking.includes(userId),
+    hasLike: isFavorite
+      ? true
+      : sound.liking.map((el) => el.id).includes(userId),
     isFavorite: isFavorite,
   }));
 };

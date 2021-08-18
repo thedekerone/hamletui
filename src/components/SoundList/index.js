@@ -6,7 +6,7 @@ export const SoundList = ({ sounds, config, onClickLike, onTogglePlay }) => {
   return (
     <Fragment>
       {sounds.map((sound) => (
-        <SoundContainer key={sound.title}>
+        <SoundContainer key={sound.id}>
           <Sound
             config={config}
             onClickLike={onClickLike}

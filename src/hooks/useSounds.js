@@ -4,6 +4,5 @@ import { GET_ALL_SOUNDS } from "../querys/querys";
 
 export const useSounds = () => {
   const { loading, error, data } = useQuery(GET_ALL_SOUNDS);
-  console.log(data);
   return { loading, error, data };
 };

@@ -25,7 +25,6 @@ function MyApp({ Component, pageProps }) {
   let state = defaultState;
 
   let store = createStore(todoApp, defaultState);
-  console.log(state);
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>

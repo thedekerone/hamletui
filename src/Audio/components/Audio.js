@@ -12,7 +12,6 @@ class AudioPlayer {
       this.audio.srcObject = src;
     }
     this.audio.play();
-    console.log(src);
   }
 
   get isPlaying() {
