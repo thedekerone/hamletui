@@ -3,14 +3,6 @@ import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA } from "../actions";
 
 // extra functions - no reducers (change directory later)
 
-function togglePlayPipe(soundList, id) {
-  return soundList.map((sound) =>
-    sound.id === id
-      ? { ...sound, isPlaying: !sound.isPlaying }
-      : { ...sound, isPlaying: false }
-  );
-}
-
 // end extra functions - no reducers (change directory later)
 
 const findById = (soundList, id) => soundList.find((sound) => sound.id === id);
@@ -66,7 +58,7 @@ function audioConfig(state = {}, action) {
     case TOGGLE_PLAY:
       return {
         ...state,
-        isPlaying: action.id === state.id ? !state.isPlaying : true,
+        isPlaying: action.id === state.current ? !state.isPlaying : true,
         current: action.id,
       };
 

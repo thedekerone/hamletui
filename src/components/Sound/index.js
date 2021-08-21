@@ -53,7 +53,7 @@ export const Sound = ({ options, config, onClickLike, onTogglePlay }) => {
         ></BsPauseFill>
       ) : (
         <BsPlayFill
-          onClick={() => handlePlay(id)}
+          onClick={() => handlePlay()}
           color='#5C20D1'
           size='35'
         ></BsPlayFill>
