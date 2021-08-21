@@ -1,15 +1,27 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
-import { authenticateUserWithPassword } from "../../../querys/querys";
-import { setLocalData } from "../../../util";
+import {
+  authenticateUserWithPassword,
+  GET_ALL_SOUNDS,
+  GET_CURRENT_USER,
+} from "../../../querys/querys";
+import { getLocalData, setLocalData } from "../../../util";
 import { LoginContainer, LoginModal, Overlay } from "./styles";
 
-export const LoginUI = ({ show = false }) => {
-  const [isShowing, setIsShowing] = useState(show);
+export const LoginUI = ({ show = false, setIsShowing }) => {
   const email = useRef();
   const password = useRef();
-  const [signin] = useMutation(authenticateUserWithPassword);
+  const [signin] = useMutation(authenticateUserWithPassword, {
+    refetchQueries: [
+      {
+        query: GET_CURRENT_USER,
+        variables: {
+          id: "60af0c9f351c033080892cfc",
+        },
+      },
+    ],
+  });
 
   const handleLogin = async () => {
     const res = await signin({
@@ -25,7 +37,7 @@ export const LoginUI = ({ show = false }) => {
   };
 
   return (
-    <LoginModal show={isShowing}>
+    <LoginModal show={show}>
       <LoginContainer>
         <h2>Login</h2>
         <div>

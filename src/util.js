@@ -5,8 +5,6 @@ export const formatSounds = (
   isFavorite = false,
   userId = "0000"
 ) => {
-  console.log(userId);
-  console.log(soundList);
   return soundList.map((sound) => ({
     title: sound.title,
     src: sound.file.publicUrl,
@@ -57,7 +55,9 @@ export const encrypt = (obj) => {
   return CryptoJS.AES.encrypt(JSON.stringify(obj), process.env.customKey);
 };
 export const decrypt = (obj) => {
-  return JSON.parse(CryptoJS.AES.decrypt(obj, process.env.customKey));
+  return JSON.parse(
+    CryptoJS.AES.decrypt(obj, process.env.customKey).toString(CryptoJS.enc.Utf8)
+  );
 };
 
 export const setLocalData = (storageName, obj) => {

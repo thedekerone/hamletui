@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { loadData, togglePlay } from "../../actions";
 import { Layout } from "../Layout";
 import { connect } from "react-redux";
@@ -19,12 +19,12 @@ import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
 export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   const { audio } = useContext(AudioManagerContext);
-
-  const isLoggedIn = getLocalData("user") !== null;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const { loading, error, data } = useQuery(GET_CURRENT_USER, {
     variables: {
-      id: getLocalData("user")?.id,
+      id: currentUser?.id,
     },
   });
   const allSounds = useQuery(GET_ALL_SOUNDS, {
@@ -50,15 +50,23 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   }
 
   useEffect(() => {
+    console.log("dasas");
+    setIsLoggedIn(getLocalData("user") !== null);
+    setCurrentUser(getLocalData("user"));
+    console.log(getLocalData("user"));
+  }, [isLoggedIn, data, error]);
+
+  useEffect(() => {
     audio.addEventListener("ended", () => {
       onTogglePlay("");
     });
     return audio.removeEventListener("ended", () => {
       onTogglePlay("");
     });
-  }, []);
+  }, [audio, onTogglePlay]);
 
   useEffect(() => {
+    console.log("refetching");
     setFavoriteSounds();
     setAllSounds();
   }, [data, allSounds]);
