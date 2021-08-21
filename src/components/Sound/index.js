@@ -4,19 +4,21 @@ import { BsPlayFill, BsHeart, BsHeartFill, BsPauseFill } from "react-icons/bs";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 import { useMutation } from "@apollo/client";
 import { DISLIKE_SOUND, LIKE_SOUND } from "../../querys/querys";
+import { getLocalData } from "../../util";
 
 export const Sound = ({ options, config, onClickLike, onTogglePlay }) => {
   const { title, createdBy, hasLike, id, src } = options;
+  const isLoggedIn = getLocalData("user") !== null;
 
   const [like] = useMutation(LIKE_SOUND, {
     variables: {
-      userId: localStorage.getItem("userId"),
+      userId: getLocalData("user")?.id,
       audioId: id,
     },
   });
   const [dislike] = useMutation(DISLIKE_SOUND, {
     variables: {
-      userId: localStorage.getItem("userId"),
+      userId: getLocalData("user")?.id,
       audioId: id,
     },
   });
@@ -65,19 +67,22 @@ export const Sound = ({ options, config, onClickLike, onTogglePlay }) => {
           <p>{createdBy}</p>
         </div>
       </div>
-      {hasLike ? (
-        <BsHeartFill
-          onClick={() => likeSound()}
-          color='#5C20D1'
-          size='25'
-        ></BsHeartFill>
-      ) : (
-        <BsHeart
-          onClick={() => likeSound()}
-          color='#5C20D1'
-          size='25'
-        ></BsHeart>
-      )}
+
+      {isLoggedIn ? (
+        hasLike ? (
+          <BsHeartFill
+            onClick={() => likeSound()}
+            color='#5C20D1'
+            size='25'
+          ></BsHeartFill>
+        ) : (
+          <BsHeart
+            onClick={() => likeSound()}
+            color='#5C20D1'
+            size='25'
+          ></BsHeart>
+        )
+      ) : null}
     </Container>
   );
 };

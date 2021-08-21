@@ -56,8 +56,8 @@ export const selectMic = (deviceId) => {
 export const encrypt = (obj) => {
   return CryptoJS.AES.encrypt(JSON.stringify(obj), process.env.customKey);
 };
-export const descrypt = (obj) => {
-  return CryptoJS.AES.decrypt(obj, process.env.customKey);
+export const decrypt = (obj) => {
+  return JSON.parse(CryptoJS.AES.decrypt(obj, process.env.customKey));
 };
 
 export const setLocalData = (storageName, obj) => {
@@ -65,5 +65,8 @@ export const setLocalData = (storageName, obj) => {
 };
 
 export const getLocalData = (storageName) => {
-  localStorage.getItem(storageName, decrypt(obj));
+  if (localStorage.getItem(storageName)) {
+    return decrypt(localStorage.getItem(storageName));
+  }
+  return null;
 };

@@ -14,15 +14,17 @@ import {
   GET_ALL_SOUNDS,
   GET_CURRENT_USER,
 } from "../../querys/querys";
-import { formatSounds, formatUser } from "../../util";
+import { formatSounds, formatUser, getLocalData } from "../../util";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
 export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   const { audio } = useContext(AudioManagerContext);
 
+  const isLoggedIn = getLocalData("user") !== null;
+
   const { loading, error, data } = useQuery(GET_CURRENT_USER, {
     variables: {
-      id: localStorage.getItem("userId"),
+      id: getLocalData("user")?.id,
     },
   });
   const allSounds = useQuery(GET_ALL_SOUNDS, {
@@ -41,11 +43,7 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   function setAllSounds() {
     if (allSounds.data) {
       onLoad(
-        formatSounds(
-          allSounds.data.allSounds,
-          false,
-          localStorage.getItem("userId")
-        ),
+        formatSounds(allSounds.data.allSounds, false, getLocalData("user")?.id),
         []
       );
     }
@@ -67,8 +65,9 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
 
   return (
     <Layout>
-      <Title>Mis audios</Title>
-      <LikedSounds></LikedSounds>
+      {isLoggedIn && <Title>Mis audios</Title>}
+
+      {isLoggedIn && <LikedSounds></LikedSounds>}
       <Title>Todos los audios</Title>
       <AllSounds></AllSounds>
     </Layout>

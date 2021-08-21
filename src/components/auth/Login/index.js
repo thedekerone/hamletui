@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { authenticateUserWithPassword } from "../../../querys/querys";
+import { setLocalData } from "../../../util";
 import { LoginContainer, LoginModal, Overlay } from "./styles";
 
 export const LoginUI = ({ show = false }) => {
@@ -17,10 +18,9 @@ export const LoginUI = ({ show = false }) => {
         password: password.current.value,
       },
     });
-    localStorage.setItem(
-      "userId",
-      res.data.authenticateUserWithPassword.item.id
-    );
+
+    setLocalData("user", res.data.authenticateUserWithPassword.item);
+
     setIsShowing(false);
   };
 
