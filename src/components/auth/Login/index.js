@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
+import { loginUser } from "../../../actions";
 import {
   authenticateUserWithPassword,
   GET_ALL_SOUNDS,
@@ -9,18 +10,11 @@ import {
 import { getLocalData, setLocalData } from "../../../util";
 import { LoginContainer, LoginModal, Overlay } from "./styles";
 
-export const LoginUI = ({ show = false, setIsShowing }) => {
+export const LoginUI = ({ show = false, setIsShowing, onLogin }) => {
   const email = useRef();
   const password = useRef();
   const [signin] = useMutation(authenticateUserWithPassword, {
-    refetchQueries: [
-      {
-        query: GET_CURRENT_USER,
-        variables: {
-          id: "60af0c9f351c033080892cfc",
-        },
-      },
-    ],
+    refetchQueries: [GET_CURRENT_USER],
   });
 
   const handleLogin = async () => {
@@ -30,6 +24,9 @@ export const LoginUI = ({ show = false, setIsShowing }) => {
         password: password.current.value,
       },
     });
+
+    console.log(res.data.authenticateUserWithPassword.item);
+    onLogin(res.data.authenticateUserWithPassword.item);
 
     setLocalData("user", res.data.authenticateUserWithPassword.item);
 
@@ -66,6 +63,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onTogglePlay: (id) => {
       dispatch(togglePlay(id));
+    },
+    onLogin: (data) => {
+      dispatch(loginUser(data));
     },
   };
 };

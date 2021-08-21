@@ -17,16 +17,16 @@ import {
 import { formatSounds, formatUser, getLocalData } from "../../util";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
-export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
+export const HomeLayout = ({ userId, onLoad, onTogglePlay, username }) => {
   const { audio } = useContext(AudioManagerContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
 
   const { loading, error, data } = useQuery(GET_CURRENT_USER, {
     variables: {
-      id: currentUser?.id,
+      id: userId,
     },
   });
+
   const allSounds = useQuery(GET_ALL_SOUNDS, {
     variables: {
       first: 40,
@@ -52,7 +52,6 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay }) => {
   useEffect(() => {
     console.log("dasas");
     setIsLoggedIn(getLocalData("user") !== null);
-    setCurrentUser(getLocalData("user"));
     console.log(getLocalData("user"));
   }, [isLoggedIn, data, error]);
 
@@ -94,6 +93,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export const Home = connect(
-  (state) => ({ userId: state.user.id }),
+  (state) => ({ userId: state.user.id, username: state.user.username }),
   mapDispatchToProps
 )(HomeLayout);

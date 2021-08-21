@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA } from "../actions";
+import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA, LOGIN } from "../actions";
 
 // extra functions - no reducers (change directory later)
 
@@ -8,7 +8,16 @@ import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA } from "../actions";
 const findById = (soundList, id) => soundList.find((sound) => sound.id === id);
 
 function user(state = {}, action) {
-  return state;
+  switch (action.type) {
+    case LOGIN:
+      return {
+        id: action.data.id,
+        username: action.data.name,
+      };
+
+    default:
+      return state;
+  }
 }
 
 // allSounds and favoriteSounds reducers work together to reduce the number of lines in the code
