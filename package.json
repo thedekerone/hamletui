@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^10.0.0",
     "graphql": "^15.5.1",
     "next": "11.0.1",
     "react": "17.0.2",

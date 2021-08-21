@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 export const formatSounds = (
   soundList = [],
   isFavorite = false,
@@ -49,4 +51,19 @@ export const selectMic = (deviceId) => {
     return navigator.mediaDevices.getUserMedia({ audio: { deviceId } });
   }
   return null;
+};
+
+export const encrypt = (obj) => {
+  return CryptoJS.AES.encrypt(JSON.stringify(obj), process.env.customKey);
+};
+export const descrypt = (obj) => {
+  return CryptoJS.AES.decrypt(obj, process.env.customKey);
+};
+
+export const setLocalData = (storageName, obj) => {
+  localStorage.setItem(storageName, encrypt(obj));
+};
+
+export const getLocalData = (storageName) => {
+  localStorage.getItem(storageName, decrypt(obj));
 };
