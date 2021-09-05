@@ -23,7 +23,7 @@ export const HomeLayout = ({ userId, onLoad, onTogglePlay, username }) => {
 
   const { loading, error, data } = useQuery(GET_CURRENT_USER, {
     variables: {
-      id: userId,
+      id: userId || getLocalData("user"),
     },
   });
 
