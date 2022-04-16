@@ -17,7 +17,7 @@ import { formatSounds } from "../src/util";
 import AudioManager from "../src/Audio/components/AudioManager";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/admin/api",
+  uri: "https://hamul-server.herokuapp.com/admin/api",
   cache: new InMemoryCache(),
 });
 

@@ -9,6 +9,7 @@ export const TOGGLE_PLAY = "TOGGLE_PLAY";
 export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";
 export const LOAD_DATA = "LOAD_DATA";
 export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 
 export function toggleLike(id) {
   return { type: TOGGLE_LIKE, id };
@@ -30,6 +31,9 @@ export function setVisibilityFilter(filter) {
 
 export function loginUser(data) {
   return { type: LOGIN, data };
+}
+export function logoutUser() {
+  return { type: LOGOUT };
 }
 
 /*

@@ -11,12 +11,18 @@ import {
 import { getLocalData } from "../../util";
 import { Fragment } from "react";
 import { Login } from "../auth/Login";
+import { logoutUser } from "../../actions";
+import { connect } from "react-redux";
 
-export const Sidebar = () => {
+export const SidebarLayout = ({ onLogout, username }) => {
   const [showLogin, setShowLogin] = useState(false);
 
   const isLoggedIn = getLocalData("user");
 
+  const logout = () => {
+    onLogout();
+    localStorage.clear();
+  };
   return (
     <Fragment>
       <FixedContainer>
@@ -25,7 +31,7 @@ export const Sidebar = () => {
             <BsPeopleCircle color='#999' size='30'></BsPeopleCircle>
           </IconContainer>
           {isLoggedIn ? (
-            <p>Nombre</p>
+            <p>{username}</p>
           ) : (
             <button onClick={() => setShowLogin(true)}>Ingresar</button>
           )}
@@ -41,18 +47,6 @@ export const Sidebar = () => {
               </li>
               <li>
                 <IconContainer className='icon-container'>
-                  <BsHeart color='#999' size='22'></BsHeart>
-                </IconContainer>
-                <p>Favoritos</p>
-              </li>
-              <li>
-                <IconContainer className='icon-container'>
-                  <BsMusicNoteBeamed color='#999' size='22'></BsMusicNoteBeamed>
-                </IconContainer>
-                <p>Sonidos</p>
-              </li>
-              <li>
-                <IconContainer className='icon-container'>
                   <BsUpload color='#999' size='22'></BsUpload>
                 </IconContainer>
                 <p>Subir</p>
@@ -63,6 +57,12 @@ export const Sidebar = () => {
                 </IconContainer>
                 <p>Configuracion</p>
               </li>
+              <li onClick={logout}>
+                <IconContainer className='icon-container'>
+                  <BsGear color='#999' size='22'></BsGear>
+                </IconContainer>
+                <p>Cerrar Sesión</p>
+              </li>
             </ul>
           </nav>
         )}
@@ -71,3 +71,16 @@ export const Sidebar = () => {
     </Fragment>
   );
 };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogout: (id) => {
+      dispatch(logoutUser(id));
+    },
+  };
+};
+
+export const Sidebar = connect(
+  (state) => ({ userId: state.user.id, username: state.user.username }),
+  mapDispatchToProps
+)(SidebarLayout);

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA, LOGIN } from "../actions";
+import { TOGGLE_LIKE, TOGGLE_PLAY, LOAD_DATA, LOGIN, LOGOUT } from "../actions";
 
 // extra functions - no reducers (change directory later)
 
@@ -13,6 +13,11 @@ function user(state = {}, action) {
       return {
         id: action.data.id,
         username: action.data.name,
+      };
+    case LOGOUT:
+      return {
+        id: 0,
+        username: "sample",
       };
 
     default:

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { loadData, togglePlay } from "../../actions";
+import { loadData, loginUser, togglePlay } from "../../actions";
 import { Layout } from "../Layout";
 import { connect } from "react-redux";
 import { AllSounds, LikedSounds } from "../LikedSounds";
@@ -17,13 +17,23 @@ import {
 import { formatSounds, formatUser, getLocalData } from "../../util";
 import { AudioManagerContext } from "../../Audio/components/AudioManager";
 
-export const HomeLayout = ({ userId, onLoad, onTogglePlay, username }) => {
+export const HomeLayout = ({
+  userId,
+  onLoad,
+  onTogglePlay,
+  username,
+  onLogin,
+}) => {
   const { audio } = useContext(AudioManagerContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  if (getLocalData("user")) {
+    onLogin(getLocalData("user"));
+  }
+
   const { loading, error, data } = useQuery(GET_CURRENT_USER, {
     variables: {
-      id: userId || getLocalData("user"),
+      id: userId,
     },
   });
 
@@ -88,6 +98,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onTogglePlay: (id) => {
       dispatch(togglePlay(id));
+    },
+    onLogin: (data) => {
+      dispatch(loginUser(data));
     },
   };
 };
